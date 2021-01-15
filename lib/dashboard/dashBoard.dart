@@ -1,5 +1,5 @@
+import 'package:blogapptrial/custWidgets/customWidgets.dart';
 import 'package:flutter/material.dart';
-
 import '../constants.dart';
 class DashBoard extends StatefulWidget {
   @override
@@ -7,10 +7,49 @@ class DashBoard extends StatefulWidget {
 }
 
 class _DashBoardState extends State<DashBoard> {
-  var _selected = 0;
+  var navBarItemSelected = 0;
+  var chipSelected = 0;
+
+  List<Widget> chips = [];
+
+  void populateChips() {
+    chips = [];
+    ob2.categories.forEach((element) {
+      chips.add(GestureDetector(
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+          child: Chip(
+            backgroundColor: this.chipSelected == ob2.categories.indexOf(element)? Colors.black54: Colors.white54,
+            label: Container(
+              width: 100,
+              child: Text(
+                element,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 20,
+                  color: this.chipSelected == ob2.categories.indexOf(element)? Colors.white: Colors.black54,
+                ),
+              ),
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+            labelPadding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+          ),
+        ),
+        onTap: () {
+          setState(() {
+            this.chipSelected = ob2.categories.indexOf(element);
+          });
+        },
+      ));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    populateChips();
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -31,8 +70,21 @@ class _DashBoardState extends State<DashBoard> {
       body: Container(
         color: Colors.white,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            UserInfo(),
+            Container(
+              height: 120,
+              width: MediaQuery.of(context).size.width,
+              child: ListView.builder(
+                itemCount: this.chips.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  return this.chips[index];
+                },
+              ),
+            ),
             Container(
               height: MediaQuery.of(context).size.height / 2,
               width: MediaQuery.of(context).size.width,
@@ -41,7 +93,7 @@ class _DashBoardState extends State<DashBoard> {
                 itemBuilder: (context, index) {
                   return ob2.articles[index];
                 },
-                itemCount: ob2.articles.length,
+                itemCount: ob2.categories.length,
                 scrollDirection: Axis.horizontal,
               ),
             )
@@ -56,11 +108,11 @@ class _DashBoardState extends State<DashBoard> {
         ),
         showSelectedLabels: false,
         showUnselectedLabels: false,
-        currentIndex: _selected,
+        currentIndex: navBarItemSelected,
         type: BottomNavigationBarType.fixed,
         onTap: (val) {
           setState(() {
-            _selected = val;
+            navBarItemSelected = val;
           });
         },
         items: [

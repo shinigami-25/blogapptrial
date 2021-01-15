@@ -10,7 +10,11 @@ class Constants {
 
   Color currentTheme;
   Color currentTextTheme;
-  String name = 'Dummy Name', email = 'Dummy_email@dummy.com', password='dummypass';
+
+  String currentDate = DateTime.now().toString().split(' ')[0];
+
+  String fullName = 'Dummy Name', email = 'Dummy_email@dummy.com', password='dummypass';
+  String name = 'Dummy', surname = 'Name';
 
   String version = '0.1';
 
@@ -24,7 +28,9 @@ class Constants {
   }
 
   void setName(String name) {
-    this.name = name;
+    this.fullName = name;
+    this.name = this.fullName.split(' ')[0];
+    this.surname = this.fullName.split(' ')[this.fullName.split(' ').length - 1];
   }
 
   void setPassword(String password) {
@@ -37,10 +43,20 @@ class Constants {
 }
 
 class DummyData {
+  var categorySelected = 0;
+
   List<Widget> articles = [
-    Article(),
-    Article(),
-    Article(),
+    ArticleTile(),
+    ArticleTile(),
+    ArticleTile(),
+  ];
+
+  List<Widget> categoryChips = [];
+  List<String> categories = [
+    'All',
+    'Science',
+    'Business',
+    'Design',
   ];
 }
 

@@ -38,7 +38,7 @@ class ProfilePage extends StatelessWidget {
                     height: 50,
                   ),
                   Text(
-                    ob.name,
+                    ob.fullName,
                     style: GoogleFonts.poppins(
                       fontSize: 20,
                       color: ob.currentTextTheme,

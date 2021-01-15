@@ -1,32 +1,78 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import '../constants.dart';
 
-class Article extends StatefulWidget {
-
+class ArticleTile extends StatefulWidget {
 
   @override
-  _ArticleState createState() => _ArticleState();
+  _ArticleTileState createState() => _ArticleTileState();
 }
 
-class _ArticleState extends State<Article> {
+class _ArticleTileState extends State<ArticleTile> {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(7, 50, 7, 50),
+        child: Container(
+          height: MediaQuery.of(context).size.height / 5,
+          width: MediaQuery.of(context).size.width / 2,
+          padding: EdgeInsets.fromLTRB(2, 2, 2, 5),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.orange,
+              borderRadius: BorderRadius.all(Radius.circular(40)),
+            ),
+          ),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(40)),
+            boxShadow: [
+              BoxShadow(
+                offset: Offset(0.0, 5.0),
+                blurRadius: 10,
+                spreadRadius: 1,
+              ),
+            ],
+          ),
+        ),
+      ),
+      onTap: () {
+
+      },
+    );
+  }
+}
+
+class UserInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(2, 5, 2, 5),
+      padding: EdgeInsets.fromLTRB(5, 15, 5, 15),
       child: Container(
-        height: MediaQuery.of(context).size.height / 5,
-        width: MediaQuery.of(context).size.width / 2,
-        padding: EdgeInsets.all(3),
-        decoration: BoxDecoration(
-          color: Colors.indigo,
-          borderRadius: BorderRadius.all(Radius.circular(25)),
-          boxShadow: [
-            BoxShadow(
-              offset: Offset(0.0, 1.0),
-              blurRadius: 10,
-              spreadRadius: 2,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              Constants().currentDate,
+              style: GoogleFonts.poppins(
+                fontSize: 20,
+                color: Colors.black26,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.left,
+            ),
+            Text(
+              'Hello, ' + Constants().name,
+              style: GoogleFonts.poppins(
+                fontSize: 32,
+                color: Colors.black54,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.left,
             ),
           ],
-        ),
+        )
       ),
     );
   }
