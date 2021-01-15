@@ -10,10 +10,11 @@ class Article extends StatefulWidget {
 class _ArticleState extends State<Article> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height / 5,
-      width: MediaQuery.of(context).size.width / 2,
+    return Padding(
+      padding: EdgeInsets.fromLTRB(2, 5, 2, 5),
       child: Container(
+        height: MediaQuery.of(context).size.height / 5,
+        width: MediaQuery.of(context).size.width / 2,
         padding: EdgeInsets.all(3),
         decoration: BoxDecoration(
           color: Colors.indigo,
