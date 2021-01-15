@@ -29,17 +29,15 @@ class _ArticleTileState extends State<ArticleTile> {
             borderRadius: BorderRadius.all(Radius.circular(40)),
             boxShadow: [
               BoxShadow(
-                offset: Offset(0.0, 5.0),
-                blurRadius: 10,
+                offset: Offset(0.0, 25.0),
+                blurRadius: 25,
                 spreadRadius: 1,
               ),
             ],
           ),
         ),
       ),
-      onTap: () {
-
-      },
+      onTap: () {},
     );
   }
 }

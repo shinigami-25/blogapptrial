@@ -93,7 +93,7 @@ class _DashBoardState extends State<DashBoard> {
                 itemBuilder: (context, index) {
                   return ob2.articles[index];
                 },
-                itemCount: ob2.categories.length,
+                itemCount: ob2.articles.length,
                 scrollDirection: Axis.horizontal,
               ),
             )
