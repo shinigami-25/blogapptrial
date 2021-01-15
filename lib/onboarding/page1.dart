@@ -38,7 +38,7 @@ class Page1 extends StatelessWidget {
                 style: GoogleFonts.poppins(
                   fontSize: 32,
                   color: Colors.white,
-                  fontWeight: FontWeight.bold
+                  fontWeight: FontWeight.bold,
                 ),
                 textAlign: TextAlign.left,
               ),
