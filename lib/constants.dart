@@ -21,6 +21,7 @@ class Constants {
   Constants() {
     this.currentTheme = lightTheme;
     this.currentTextTheme = textLight;
+    this.email = this.email.split('@')[0];
   }
 
   void setTheme(Color color) {
@@ -46,9 +47,7 @@ class DummyData {
   var categorySelected = 0;
 
   List<Widget> articles = [
-    ArticleTile(),
-    ArticleTile(),
-    ArticleTile(),
+
   ];
 
   List<Widget> categoryChips = [];

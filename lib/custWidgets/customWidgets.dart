@@ -13,7 +13,7 @@ class _ArticleTileState extends State<ArticleTile> {
   Widget build(BuildContext context) {
     return GestureDetector(
       child: Padding(
-        padding: EdgeInsets.fromLTRB(7, 50, 7, 50),
+        padding: EdgeInsets.fromLTRB(25, 50, 0, 50),
         child: Container(
           height: MediaQuery.of(context).size.height / 5,
           width: MediaQuery.of(context).size.width / 2,
@@ -46,7 +46,7 @@ class UserInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(5, 15, 5, 15),
+      padding: EdgeInsets.fromLTRB(25, 15, 5, 15),
       child: Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,7 +64,7 @@ class UserInfo extends StatelessWidget {
               'Hello, ' + Constants().name,
               style: GoogleFonts.poppins(
                 fontSize: 32,
-                color: Colors.black54,
+                color: Colors.black87,
                 fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.left,

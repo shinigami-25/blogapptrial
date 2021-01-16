@@ -1,3 +1,4 @@
+import 'package:blogapptrial/createPage/createPage.dart';
 import 'package:blogapptrial/custWidgets/customWidgets.dart';
 import 'package:flutter/material.dart';
 import '../constants.dart';
@@ -17,9 +18,9 @@ class _DashBoardState extends State<DashBoard> {
     ob2.categories.forEach((element) {
       chips.add(GestureDetector(
         child: Padding(
-          padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+          padding: EdgeInsets.fromLTRB(25, 5, 0, 5),
           child: Chip(
-            backgroundColor: this.chipSelected == ob2.categories.indexOf(element)? Colors.black54: Colors.white54,
+            backgroundColor: this.chipSelected == ob2.categories.indexOf(element)? Colors.black87: Colors.black12,
             label: Container(
               width: 100,
               child: Text(
@@ -27,7 +28,7 @@ class _DashBoardState extends State<DashBoard> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 20,
-                  color: this.chipSelected == ob2.categories.indexOf(element)? Colors.white: Colors.black54,
+                  color: this.chipSelected == ob2.categories.indexOf(element)? Colors.white: Colors.black87,
                 ),
               ),
             ),
@@ -52,6 +53,8 @@ class _DashBoardState extends State<DashBoard> {
 
     return Scaffold(
       appBar: AppBar(
+        primary: true,
+        toolbarHeight: 70,
         backgroundColor: Colors.white,
         elevation: 0.0,
         leading: IconButton(
@@ -106,6 +109,7 @@ class _DashBoardState extends State<DashBoard> {
         selectedIconTheme: IconThemeData(
           color: Colors.black87,
         ),
+        backgroundColor: Colors.transparent,
         showSelectedLabels: false,
         showUnselectedLabels: false,
         currentIndex: navBarItemSelected,
@@ -118,6 +122,7 @@ class _DashBoardState extends State<DashBoard> {
         items: [
           BottomNavigationBarItem(
             label: 'home',
+            backgroundColor: Colors.transparent,
             icon: Icon(
               Icons.home_outlined,
               color: Colors.black,
@@ -126,6 +131,7 @@ class _DashBoardState extends State<DashBoard> {
           ),
           BottomNavigationBarItem(
             label: 'bookmark',
+            backgroundColor: Colors.transparent,
             icon: Icon(
               Icons.bookmark_border_outlined,
               color: Colors.black,
@@ -134,6 +140,7 @@ class _DashBoardState extends State<DashBoard> {
           ),
           BottomNavigationBarItem(
               label: 'notification',
+              backgroundColor: Colors.transparent,
               icon: Icon(
                 Icons.notifications_none_outlined,
                 color: Colors.black,
@@ -142,6 +149,7 @@ class _DashBoardState extends State<DashBoard> {
           ),
           BottomNavigationBarItem(
               label: 'profile',
+              backgroundColor: Colors.transparent,
               icon: Icon(
                 Icons.account_circle_outlined,
                 color: Colors.black,
@@ -155,7 +163,9 @@ class _DashBoardState extends State<DashBoard> {
           Icons.add,
         ),
         backgroundColor: Colors.black87,
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => CreatePage1()));
+        },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
     );
