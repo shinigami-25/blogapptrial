@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import '../constants.dart';
 import 'createPage2.dart';
 
 class CreatePage1 extends StatelessWidget {
   final _controller = TextEditingController();
   final _categoryController = TextEditingController();
-  var category = 'None';
   @override
   Widget build(BuildContext context) {
+  var category = 'Misc';
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -24,6 +23,7 @@ class CreatePage1 extends StatelessWidget {
       ),
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
               width: MediaQuery.of(context).size.width - 100,
@@ -47,6 +47,9 @@ class CreatePage1 extends StatelessWidget {
                 },
               ),
             ),
+            SizedBox(
+              height: 25,
+            ),
             Container(
               width: MediaQuery.of(context).size.width - 100,
               child: TextField(
@@ -66,24 +69,31 @@ class CreatePage1 extends StatelessWidget {
                 ),
                 onSubmitted: (content) {
                   if (_categoryController.text != '') {
-                    this.category = _categoryController.text;
+                    category = _categoryController.text;
                   }
                   Navigator.pop(context);
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => CreatePage2(_controller.text, this.category)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => CreatePage2(_controller.text, category)));
                 },
               ),
             ),
+            SizedBox(
+              height: 25,
+            ),
             FlatButton(
               onPressed: () {
+                if (_categoryController.text != '') {
+                  category = _categoryController.text;
+                }
                 Navigator.pop(context);
-                Navigator.push(context, MaterialPageRoute(builder: (context) => CreatePage2(_controller.text, this.category)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => CreatePage2(_controller.text, category)));
               },
+              color: Colors.lightBlue,
               child: Text(
                 'Next',
               ),
             ),
           ],
-        )
+        ),
       ),
     );
   }

@@ -1,4 +1,3 @@
-import 'package:blogapptrial/custWidgets/customWidgets.dart';
 import 'package:flutter/material.dart';
 
 class Constants {

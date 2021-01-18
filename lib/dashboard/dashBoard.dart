@@ -1,173 +1,182 @@
 import 'package:blogapptrial/createPage/createPage.dart';
 import 'package:blogapptrial/custWidgets/customWidgets.dart';
+import 'package:blogapptrial/dashboard/article.dart';
+import 'package:blogapptrial/dummyPage.dart';
 import 'package:flutter/material.dart';
-import '../constants.dart';
+
 class DashBoard extends StatefulWidget {
   @override
   _DashBoardState createState() => _DashBoardState();
 }
 
 class _DashBoardState extends State<DashBoard> {
-  var navBarItemSelected = 0;
-  var chipSelected = 0;
+  var _divSelected = 0;
+  DateTime today = DateTime.now();
+  var articleView;
 
-  List<Widget> chips = [];
 
-  void populateChips() {
-    chips = [];
-    ob2.categories.forEach((element) {
-      chips.add(GestureDetector(
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(25, 5, 0, 5),
-          child: Chip(
-            backgroundColor: this.chipSelected == ob2.categories.indexOf(element)? Colors.black87: Colors.black12,
-            label: Container(
-              width: 100,
-              child: Text(
-                element,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 20,
-                  color: this.chipSelected == ob2.categories.indexOf(element)? Colors.white: Colors.black87,
-                ),
-              ),
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-            ),
-            labelPadding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-          ),
-        ),
-        onTap: () {
-          setState(() {
-            this.chipSelected = ob2.categories.indexOf(element);
-          });
-        },
-      ));
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
-    populateChips();
-
-    return Scaffold(
-      appBar: AppBar(
-        primary: true,
-        toolbarHeight: 70,
-        backgroundColor: Colors.white,
-        elevation: 0.0,
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          color: Colors.black54,
-          onPressed: () {},
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.more_horiz_outlined),
-            color: Colors.black54,
-            onPressed: () {},
-          ),
-        ],
-      ),
-      body: Container(
-        color: Colors.white,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
+    return SafeArea(
+      child: Scaffold(
+        body: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            UserInfo(),
             Container(
-              height: 120,
-              width: MediaQuery.of(context).size.width,
-              child: ListView.builder(
-                itemCount: this.chips.length,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  return this.chips[index];
-                },
+              width: 80,
+              child: Material(
+                color: Colors.black26,
+                elevation: 15,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 100,
+                      height: 100,
+                      color: Colors.transparent,
+                      child: IconButton(
+                        icon: Icon(Icons.logout),
+                        color: Colors.black,
+                        iconSize: 40,
+                        onPressed: () {
+                          setState(() {
+                            
+                          });
+                        },
+                      ),
+                    ),
+                    Container(
+                      width: 100,
+                      height: 100,
+                      color:
+                          _divSelected == 0 ? Colors.white : Colors.transparent,
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.home_outlined,
+                          color: Colors.black,
+                          size: 40,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _divSelected = 0;
+                          });
+                        },
+                      ),
+                    ),
+                    Container(
+                      width: 100,
+                      height: 100,
+                      color:
+                          _divSelected == 1 ? Colors.white : Colors.transparent,
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.bookmark_border_outlined,
+                          color: Colors.black,
+                          size: 40,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _divSelected = 1;
+                          });
+                        },
+                      ),
+                    ),
+                    Container(
+                      width: 100,
+                      height: 100,
+                      color:
+                          _divSelected == 2 ? Colors.white : Colors.transparent,
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.notifications_none_outlined,
+                          color: Colors.black,
+                          size: 40,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _divSelected = 2;
+                          });
+                        },
+                      ),
+                    ),
+                    Container(
+                      width: 100,
+                      height: 100,
+                      color:
+                          _divSelected == 3 ? Colors.white : Colors.transparent,
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.account_circle_outlined,
+                          color: Colors.black,
+                          size: 40,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _divSelected = 3;
+                          });
+                        },
+                      ),
+                    ),
+                    Container(
+                      width: 100,
+                      height: 100,
+                      color:
+                          _divSelected == 4 ? Colors.white : Colors.transparent,
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.settings_outlined,
+                          color: Colors.black,
+                          size: 40,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _divSelected = 4;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             Container(
-              height: MediaQuery.of(context).size.height / 2,
-              width: MediaQuery.of(context).size.width,
-              child: ListView.builder(
-                cacheExtent: 100,
-                itemBuilder: (context, index) {
-                  return ob2.articles[index];
-                },
-                itemCount: ob2.articles.length,
-                scrollDirection: Axis.horizontal,
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width - 85,
+              color: Colors.white,
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                child: _divSelected == 0
+                    ? Container(
+                        height: MediaQuery.of(context).size.height,
+                        width: MediaQuery.of(context).size.width,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            UserInfo(),
+                            ArticleView('Misc'),
+                            SizedBox(height: 150),
+                          ],
+                        ),
+                      )
+                    : _divSelected == 1
+                        ? ArticleView('Science')
+                        : DummyPage(),
               ),
-            )
+            ),
           ],
         ),
+        floatingActionButton: _divSelected == 0
+            ? FloatingActionButton(
+                child: Icon(Icons.add),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => CreatePage1()));
+                },
+              )
+            : Container(),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        elevation: 0.0,
-        iconSize: 30,
-        selectedIconTheme: IconThemeData(
-          color: Colors.black87,
-        ),
-        backgroundColor: Colors.transparent,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        currentIndex: navBarItemSelected,
-        type: BottomNavigationBarType.fixed,
-        onTap: (val) {
-          setState(() {
-            navBarItemSelected = val;
-          });
-        },
-        items: [
-          BottomNavigationBarItem(
-            label: 'home',
-            backgroundColor: Colors.transparent,
-            icon: Icon(
-              Icons.home_outlined,
-              color: Colors.black,
-            ),
-            activeIcon: Icon(Icons.home),
-          ),
-          BottomNavigationBarItem(
-            label: 'bookmark',
-            backgroundColor: Colors.transparent,
-            icon: Icon(
-              Icons.bookmark_border_outlined,
-              color: Colors.black,
-            ),
-            activeIcon: Icon(Icons.bookmark),
-          ),
-          BottomNavigationBarItem(
-              label: 'notification',
-              backgroundColor: Colors.transparent,
-              icon: Icon(
-                Icons.notifications_none_outlined,
-                color: Colors.black,
-              ),
-              activeIcon: Icon(Icons.notifications)
-          ),
-          BottomNavigationBarItem(
-              label: 'profile',
-              backgroundColor: Colors.transparent,
-              icon: Icon(
-                Icons.account_circle_outlined,
-                color: Colors.black,
-              ),
-              activeIcon: Icon(Icons.account_circle)
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(
-          Icons.add,
-        ),
-        backgroundColor: Colors.black87,
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => CreatePage1()));
-        },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterDocked,
     );
   }
 }
