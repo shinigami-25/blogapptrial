@@ -1,23 +1,23 @@
+import 'package:blogapptrial/constants.dart';
+import 'package:blogapptrial/firestoreManagement/FirestoreUtility.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
-import '../constants.dart';
-
 class StorageWriteUtility {
   FirebaseStorage storage = FirebaseStorage.instance;
-  Reference _reference, _catReference;
+  Reference _reference;
   String title, category;
 
   StorageWriteUtility(this.title, this.category) {
     this.title += '.txt';
-    this.category = '/' + this.category + '/';
-    this._catReference = storage.ref('all' + this.category + this.title);
-    this._reference = storage.ref(ob.email + this.category + this.title);
+    this.category = '/' + this.category + ';';
+    this._reference = storage.ref('All' + this.category + this.title);
   }
 
   void writeString(String data) async {
     await _reference.putString(data);
-    await _catReference.putString(data);
+    firestoreUtility.setDoc(ob.email);
+    await firestoreUtility.addDataArray('my-blogs', 'All' + this.category + this.title);
   }
 }
 

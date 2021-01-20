@@ -1,8 +1,11 @@
 import 'package:blogapptrial/createPage/createPage.dart';
 import 'package:blogapptrial/custWidgets/customWidgets.dart';
-import 'package:blogapptrial/dashboard/article.dart';
+//import 'package:blogapptrial/dashboard/article.dart';
 import 'package:blogapptrial/dummyPage.dart';
+import 'package:blogapptrial/firestoreManagement/FirestoreUtility.dart';
 import 'package:flutter/material.dart';
+
+import '../constants.dart';
 
 class DashBoard extends StatefulWidget {
   @override
@@ -13,8 +16,6 @@ class _DashBoardState extends State<DashBoard> {
   var _divSelected = 0;
   DateTime today = DateTime.now();
   var articleView;
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +40,12 @@ class _DashBoardState extends State<DashBoard> {
                         icon: Icon(Icons.logout),
                         color: Colors.black,
                         iconSize: 40,
-                        onPressed: () {
-                          setState(() {
-                            
-                          });
+                        onPressed: () async {
+                          firestoreUtility.setDoc(ob.email);
+                          await firestoreUtility.addDataArray(
+                              'my-liked-authors', 'ami');
+                          firestoreUtility.getDataArray('my-liked-authors');
+                          setState(() {});
                         },
                       ),
                     ),
@@ -141,29 +144,15 @@ class _DashBoardState extends State<DashBoard> {
               ),
             ),
             Container(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width - 85,
               color: Colors.white,
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                child: _divSelected == 0
-                    ? Container(
-                        height: MediaQuery.of(context).size.height,
-                        width: MediaQuery.of(context).size.width,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            UserInfo(),
-                            ArticleView('Misc'),
-                            SizedBox(height: 150),
-                          ],
-                        ),
-                      )
-                    : _divSelected == 1
-                        ? ArticleView('Science')
-                        : DummyPage(),
-              ),
+              child: _divSelected == 0
+                  ? HomeTab()
+                  : _divSelected == 1
+                      ? BookmarkTab()
+                      : Container(),
             ),
           ],
         ),
@@ -176,6 +165,161 @@ class _DashBoardState extends State<DashBoard> {
                 },
               )
             : Container(),
+      ),
+    );
+  }
+}
+
+class HomeTab extends StatefulWidget {
+  @override
+  _HomeTabState createState() => _HomeTabState();
+}
+
+class _HomeTabState extends State<HomeTab> {
+  //var _category = 'Misc';
+  List<String> categories = [
+    'All',
+    'Science',
+    'Technology',
+    'Misc',
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> categoryChips = [];
+    categories.forEach((element) {
+      categoryChips.add(
+        GestureDetector(
+          child: Container(
+            width: 120,
+            child: Chip(
+              backgroundColor:
+                  ob.categoryForHome == element ? Colors.green : Colors.black45,
+              label: Container(
+                width: 70,
+                height: 30,
+                child: Center(
+                  child: Text(element),
+                ),
+              ),
+            ),
+          ),
+          onTap: () {
+            setState(() {
+              ob.categoryForHome = element;
+            });
+          },
+        ),
+      );
+    });
+
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      color: ob.categoryForHome == 'All'
+          ? Colors.amber
+          : ob.categoryForHome == 'Science'
+              ? Colors.cyanAccent
+              : ob.categoryForHome == 'Technology'
+                  ? Colors.indigo
+                  : ob.categoryForHome == 'Misc'
+                      ? Colors.purple
+                      : Colors.black,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          UserInfo(),
+          SizedBox(
+              height: 200,
+              width: MediaQuery.of(context).size.width,
+              child: Row(
+                children: [
+                  Flexible(
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: categoryChips,
+                    ),
+                  ),
+                ],
+              )),
+          ArticleView(),
+          SizedBox(
+            height: 100,
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class BookmarkTab extends StatefulWidget {
+  @override
+  _BookmarkTabState createState() => _BookmarkTabState();
+}
+
+class _BookmarkTabState extends State<BookmarkTab> {
+  List<String> categories = [
+    'All',
+    'Science',
+    'Technology',
+    'Misc',
+  ];
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> categoryChips = [];
+    categories.forEach((element) {
+      categoryChips.add(
+        GestureDetector(
+          child: Container(
+            width: 120,
+            child: Chip(
+              backgroundColor:
+                  ob.categoryForHome == element ? Colors.green : Colors.black45,
+              label: Container(
+                width: 70,
+                height: 30,
+                child: Center(
+                  child: Text(element),
+                ),
+              ),
+            ),
+          ),
+          onTap: () {
+            setState(() {
+              ob.categoryForHome = element;
+            });
+          },
+        ),
+      );
+    });
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          UserInfo(),
+          SizedBox(
+            height: 200,
+            width: MediaQuery.of(context).size.width,
+            child: Row(
+              children: [
+                Flexible(
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: categoryChips,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          ArticleView(),
+          SizedBox(
+            height: 100,
+          )
+        ],
       ),
     );
   }

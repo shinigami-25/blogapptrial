@@ -1,7 +1,8 @@
-import 'package:blogapptrial/custWidgets/customWidgets.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../constants.dart';
 
 class ArticleTile extends StatefulWidget {
   final title;
@@ -29,7 +30,7 @@ class _ArticleTileState extends State<ArticleTile> {
           // padding: EdgeInsets.fromLTRB(2, 2, 2, 5),
           child: Container(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
                   height: 100,
@@ -38,6 +39,7 @@ class _ArticleTileState extends State<ArticleTile> {
                     color: Colors.white54,
                   ),
                   child: RichText(
+                    textAlign: TextAlign.center,
                     maxLines: 3,
                     text: TextSpan(
                       text: this.title.split('.')[0],
@@ -71,7 +73,9 @@ class _ArticleTileState extends State<ArticleTile> {
       ),
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => ArticlePage(this.title, this.category)));
+            context,
+            MaterialPageRoute(
+                builder: (context) => ArticlePage(this.title)));
       },
     );
   }
@@ -81,28 +85,25 @@ class ArticleView extends StatefulWidget {
   ArticleView(this.category);
   final category;
   @override
-  _ArticleViewState createState() => _ArticleViewState(this.category);
+  _ArticleViewState createState() => _ArticleViewState(ob.categoryForHome);
 }
 
 class _ArticleViewState extends State<ArticleView> {
-  _ArticleViewState(this.category) {
-    this.ref = storage.ref('all').child(this.category);
-  }
+  _ArticleViewState(this.category);
   final category;
-  FirebaseStorage storage = FirebaseStorage.instance;
-  Reference ref;
-
-  List<ArticleTile> articles = [];
-
   @override
   Widget build(BuildContext context) {
+    FirebaseStorage storage = FirebaseStorage.instance;
+    Reference ref = storage.ref('All').child(ob.categoryForHome);
     return FutureBuilder(
-      future: ref.listAll(),
+      future: ref.list(),
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          List<ArticleTile> articles = [];
           snapshot.data.items.forEach((element) {
-            if (!articles.contains(ArticleTile(element.name.toString(), this.category)))
-              articles.add(ArticleTile(element.name.toString(), this.category));
+            if (!articles
+                .contains(ArticleTile(element.name.toString(), ob.categoryForHome)))
+              articles.add(ArticleTile(element.name.toString(), ob.categoryForHome));
           });
           return Flexible(
             child: ListView(
@@ -111,6 +112,16 @@ class _ArticleViewState extends State<ArticleView> {
             ),
           );
         }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(
+              strokeWidth: 15,
+              backgroundColor: Colors.white,
+            ),
+          );
+        }
+
         if (snapshot.hasError) {
           Container(
             height: 500,
@@ -131,20 +142,18 @@ class _ArticleViewState extends State<ArticleView> {
 }
 
 class ArticlePage extends StatefulWidget {
-  ArticlePage(this.title, this.category);
+  ArticlePage(this.title);
   final title;
-  final category;
   @override
   _ArticlePageState createState() =>
-      _ArticlePageState(this.title, this.category);
+      _ArticlePageState(this.title);
 }
 
 class _ArticlePageState extends State<ArticlePage> {
-  _ArticlePageState(this.title, this.category) {
-    ref = storage.ref('all').child(this.category).child(this.title);
+  _ArticlePageState(this.title) {
+    ref = storage.ref('All').child(ob.categoryForHome).child(this.title);
   }
   final title;
-  final category;
   final storage = FirebaseStorage.instance;
   Reference ref;
 
@@ -161,7 +170,10 @@ class _ArticlePageState extends State<ArticlePage> {
             snapshot.data.forEach((element) {
               content += String.fromCharCode(element);
             });
-            return Text(content);
+            return SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Text(content),
+            );
           }
 
           if (snapshot.hasError) {

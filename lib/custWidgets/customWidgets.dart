@@ -1,4 +1,3 @@
-import 'package:blogapptrial/dashboard/article.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../constants.dart';
@@ -9,29 +8,30 @@ class UserInfo extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.fromLTRB(25, 15, 5, 15),
       child: Container(
-          child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            Constants().currentDate,
-            style: GoogleFonts.poppins(
-              fontSize: 20,
-              color: Colors.black26,
-              fontWeight: FontWeight.bold,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              Constants().currentDate,
+              style: GoogleFonts.poppins(
+                fontSize: 20,
+                color: Colors.black26,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.left,
             ),
-            textAlign: TextAlign.left,
-          ),
-          Text(
-            'Hello, ' + Constants().name,
-            style: GoogleFonts.poppins(
-              fontSize: 32,
-              color: Colors.black87,
-              fontWeight: FontWeight.bold,
+            Text(
+              'Hello, ' + Constants().name,
+              style: GoogleFonts.poppins(
+                fontSize: 32,
+                color: Colors.black87,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.left,
             ),
-            textAlign: TextAlign.left,
-          ),
-        ],
-      )),
+          ],
+        ),
+      ),
     );
   }
 }

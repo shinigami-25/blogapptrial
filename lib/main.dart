@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Container(
-            color: Colors.orange,
+            color: Colors.red,
           );
         }
 
@@ -32,8 +32,11 @@ class MyApp extends StatelessWidget {
           );
         }
 
-        return Container(
-          color: Colors.green,
+        return Center(
+          child: CircularProgressIndicator(
+            backgroundColor: Colors.indigo,
+            strokeWidth: 15,
+          ),
         );
       },
     );

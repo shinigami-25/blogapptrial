@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 class Constants {
+  String categoryForHome = 'All';
+  String categoryForBookmark = 'All';
+
   Color lightTheme = Colors.white70;
   Color darkTheme = Color.fromRGBO(2, 10, 73, 1);
 
@@ -12,7 +15,10 @@ class Constants {
 
   String currentDate = DateTime.now().toString().split(' ')[0];
 
-  String fullName = 'Dummy Name', email = 'Dummy_email@dummy.com', password='dummypass';
+  String fullName = 'Dummy Name',
+      email = 'Dummy_email',
+      domain = 'dummy.com',
+      password = 'dummypass';
   String name = 'Dummy', surname = 'Name';
 
   String version = '0.1';
@@ -20,7 +26,6 @@ class Constants {
   Constants() {
     this.currentTheme = lightTheme;
     this.currentTextTheme = textLight;
-    this.email = this.email.split('@')[0];
   }
 
   void setTheme(Color color) {
@@ -30,7 +35,8 @@ class Constants {
   void setName(String name) {
     this.fullName = name;
     this.name = this.fullName.split(' ')[0];
-    this.surname = this.fullName.split(' ')[this.fullName.split(' ').length - 1];
+    this.surname =
+        this.fullName.split(' ')[this.fullName.split(' ').length - 1];
   }
 
   void setPassword(String password) {
@@ -45,9 +51,7 @@ class Constants {
 class DummyData {
   var categorySelected = 0;
 
-  List<Widget> articles = [
-
-  ];
+  List<Widget> articles = [];
 
   List<Widget> categoryChips = [];
   List<String> categories = [
