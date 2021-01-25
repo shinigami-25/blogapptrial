@@ -1,9 +1,24 @@
-import 'package:blogapptrial/dashboard/dashBoard.dart';
+import 'package:blogapptrial/onboarding/login.dart';
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  BannerAd createBannerAd() {
+    return BannerAd(
+      adUnitId: 'ca-app-pub-3075357993642618/4064934561',
+      size: AdSize.banner,
+      listener: (MobileAdEvent event) {
+        print("BannerAd event $event");
+      },
+    );
+  }
+  await Firebase.initializeApp();
+  FirebaseAdMob.instance.initialize(appId: 'ca-app-pub-3075357993642618~6691097905');
+  createBannerAd()
+    ..load()
+    ..show();
   runApp(MyApp());
 }
 
@@ -28,7 +43,7 @@ class MyApp extends StatelessWidget {
               primarySwatch: Colors.indigo,
               visualDensity: VisualDensity.adaptivePlatformDensity,
             ),
-            home: DashBoard(),
+            home: LoginPage(),
           );
         }
 

@@ -8,6 +8,7 @@ class UserInfo extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.fromLTRB(25, 15, 5, 15),
       child: Container(
+        height: 120,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -21,7 +22,7 @@ class UserInfo extends StatelessWidget {
               textAlign: TextAlign.left,
             ),
             Text(
-              'Hello, ' + Constants().name,
+              'Hello, ' + ob.name,
               style: GoogleFonts.poppins(
                 fontSize: 32,
                 color: Colors.black87,

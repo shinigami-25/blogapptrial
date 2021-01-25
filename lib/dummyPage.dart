@@ -19,16 +19,17 @@ class _ArticleViewState extends State<ArticleView> {
           List<ArticleTile> articles = [];
           snapshot.data.items.forEach((element) {
             String cate = element.name.toString().split(';')[0];
-            String title = element.name.toString().split(';')[1];
-            if (!articles.contains(ArticleTile(title, cate))) {
+            if (!articles.contains(ArticleTile(element.toString()))) {
               if (cate == ob.categoryForHome)
-                articles.add(ArticleTile(title, cate));
+                articles.add(ArticleTile(element.toString()));
               else if (ob.categoryForHome == 'All')
-                articles.add(ArticleTile(title, cate));
+                articles.add(ArticleTile(element.toString()));
             }
           });
           return Flexible(
+            flex: 2,
             child: ListView(
+              shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               children: articles,
             ),

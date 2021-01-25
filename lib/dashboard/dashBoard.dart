@@ -1,9 +1,11 @@
+import 'package:blogapptrial/accountPage/profilePage.dart';
 import 'package:blogapptrial/createPage/createPage.dart';
 import 'package:blogapptrial/custWidgets/customWidgets.dart';
 //import 'package:blogapptrial/dashboard/article.dart';
 import 'package:blogapptrial/dummyPage.dart';
 import 'package:blogapptrial/firestoreManagement/FirestoreUtility.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../constants.dart';
 
@@ -19,154 +21,201 @@ class _DashBoardState extends State<DashBoard> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              width: 80,
-              child: Material(
-                color: Colors.black26,
-                elevation: 15,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 100,
-                      height: 100,
-                      color: Colors.transparent,
-                      child: IconButton(
-                        icon: Icon(Icons.logout),
-                        color: Colors.black,
-                        iconSize: 40,
-                        onPressed: () async {
-                          firestoreUtility.setDoc(ob.email);
-                          await firestoreUtility.addDataArray(
-                              'my-liked-authors', 'ami');
-                          firestoreUtility.getDataArray('my-liked-authors');
-                          setState(() {});
-                        },
+    Future<bool> flag = firestoreUtility.checkDoc(ob.email);
+    return FutureBuilder(
+        future: flag,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            if (snapshot.data == true) {
+              print(true);
+              firestoreUtility.setDoc(ob.email);
+            } else {
+              print(false);
+              firestoreUtility.addDoc(ob.email);
+            }
+          }
+          return SafeArea(
+            child: Scaffold(
+              body: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: 80,
+                    child: Material(
+                      color: Colors.black26,
+                      elevation: 15,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 100,
+                            height: 100,
+                            color: Colors.transparent,
+                            child: IconButton(
+                              icon: Icon(Icons.book),
+                              color: Colors.black,
+                              iconSize: 40,
+                              onPressed: () {
+                                setState(() {});
+                              },
+                            ),
+                          ),
+                          Container(
+                            width: 100,
+                            height: 100,
+                            color: _divSelected == 0
+                                ? Colors.white
+                                : Colors.transparent,
+                            child: IconButton(
+                              icon: Icon(
+                                _divSelected == 0
+                                    ? Icons.home
+                                    : Icons.home_outlined,
+                                color: Colors.black,
+                                size: 40,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _divSelected = 0;
+                                });
+                              },
+                            ),
+                          ),
+                          Container(
+                            width: 100,
+                            height: 100,
+                            color: _divSelected == 1
+                                ? Colors.white
+                                : Colors.transparent,
+                            child: IconButton(
+                              icon: Icon(
+                                _divSelected == 1
+                                    ? Icons.favorite
+                                    : Icons.favorite_border_outlined,
+                                color: Colors.black,
+                                size: 40,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _divSelected = 1;
+                                });
+                              },
+                            ),
+                          ),
+                          Container(
+                            width: 100,
+                            height: 100,
+                            color: _divSelected == 2
+                                ? Colors.white
+                                : Colors.transparent,
+                            child: IconButton(
+                              icon: Icon(
+                                _divSelected == 2
+                                    ? Icons.notifications
+                                    : Icons.notifications_none_outlined,
+                                color: Colors.black,
+                                size: 40,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _divSelected = 2;
+                                });
+                              },
+                            ),
+                          ),
+                          Container(
+                            width: 100,
+                            height: 100,
+                            color: _divSelected == 3
+                                ? Colors.white
+                                : Colors.transparent,
+                            child: IconButton(
+                              icon: Icon(
+                                _divSelected == 3
+                                    ? Icons.account_circle
+                                    : Icons.account_circle_outlined,
+                                color: Colors.black,
+                                size: 40,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _divSelected = 3;
+                                });
+                              },
+                            ),
+                          ),
+                          Container(
+                            width: 100,
+                            height: 100,
+                            color: _divSelected == 4
+                                ? Colors.white
+                                : Colors.transparent,
+                            child: IconButton(
+                              icon: Icon(
+                                _divSelected == 4
+                                    ? Icons.settings
+                                    : Icons.settings_outlined,
+                                color: Colors.black,
+                                size: 40,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _divSelected = 4;
+                                });
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    Container(
-                      width: 100,
-                      height: 100,
-                      color:
-                          _divSelected == 0 ? Colors.white : Colors.transparent,
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.home_outlined,
-                          color: Colors.black,
-                          size: 40,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _divSelected = 0;
-                          });
-                        },
-                      ),
-                    ),
-                    Container(
-                      width: 100,
-                      height: 100,
-                      color:
-                          _divSelected == 1 ? Colors.white : Colors.transparent,
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.bookmark_border_outlined,
-                          color: Colors.black,
-                          size: 40,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _divSelected = 1;
-                          });
-                        },
-                      ),
-                    ),
-                    Container(
-                      width: 100,
-                      height: 100,
-                      color:
-                          _divSelected == 2 ? Colors.white : Colors.transparent,
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.notifications_none_outlined,
-                          color: Colors.black,
-                          size: 40,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _divSelected = 2;
-                          });
-                        },
-                      ),
-                    ),
-                    Container(
-                      width: 100,
-                      height: 100,
-                      color:
-                          _divSelected == 3 ? Colors.white : Colors.transparent,
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.account_circle_outlined,
-                          color: Colors.black,
-                          size: 40,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _divSelected = 3;
-                          });
-                        },
-                      ),
-                    ),
-                    Container(
-                      width: 100,
-                      height: 100,
-                      color:
-                          _divSelected == 4 ? Colors.white : Colors.transparent,
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.settings_outlined,
-                          color: Colors.black,
-                          size: 40,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _divSelected = 4;
-                          });
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width - 85,
+                    color: Colors.white,
+                    child: _divSelected == 0
+                        ? HomeTab()
+                        : _divSelected == 1
+                            ? FavedTab()
+                            : _divSelected == 3
+                                ? ProfilePage()
+                                : Container(),
+                  ),
+                ],
               ),
+              bottomNavigationBar: BottomNavigationBar(
+                items: [
+                  BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.ac_unit_outlined,
+                      size: 0,
+                    ),
+                    label: '',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.ac_unit_outlined,
+                      size: 0,
+                    ),
+                    label: '',
+                  ),
+                ],
+              ),
+              floatingActionButton: _divSelected == 0
+                  ? FloatingActionButton(
+                      child: Icon(Icons.add),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CreatePage1()));
+                      },
+                    )
+                  : Container(),
             ),
-            Container(
-              padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width - 85,
-              color: Colors.white,
-              child: _divSelected == 0
-                  ? HomeTab()
-                  : _divSelected == 1
-                      ? BookmarkTab()
-                      : Container(),
-            ),
-          ],
-        ),
-        floatingActionButton: _divSelected == 0
-            ? FloatingActionButton(
-                child: Icon(Icons.add),
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => CreatePage1()));
-                },
-              )
-            : Container(),
-      ),
-    );
+          );
+        });
   }
 }
 
@@ -216,22 +265,15 @@ class _HomeTabState extends State<HomeTab> {
     return Container(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
-      color: ob.categoryForHome == 'All'
-          ? Colors.amber
-          : ob.categoryForHome == 'Science'
-              ? Colors.cyanAccent
-              : ob.categoryForHome == 'Technology'
-                  ? Colors.indigo
-                  : ob.categoryForHome == 'Misc'
-                      ? Colors.purple
-                      : Colors.black,
+      color: Colors.white,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           UserInfo(),
           SizedBox(
-              height: 200,
+              height: 100,
               width: MediaQuery.of(context).size.width,
               child: Row(
                 children: [
@@ -243,7 +285,12 @@ class _HomeTabState extends State<HomeTab> {
                   ),
                 ],
               )),
-          ArticleView(),
+          SizedBox(
+            height: 320,
+            child: Row(
+              children: [ArticleView()],
+            ),
+          ),
           SizedBox(
             height: 100,
           )
@@ -253,12 +300,12 @@ class _HomeTabState extends State<HomeTab> {
   }
 }
 
-class BookmarkTab extends StatefulWidget {
+class FavedTab extends StatefulWidget {
   @override
-  _BookmarkTabState createState() => _BookmarkTabState();
+  _FavedTabState createState() => _FavedTabState();
 }
 
-class _BookmarkTabState extends State<BookmarkTab> {
+class _FavedTabState extends State<FavedTab> {
   List<String> categories = [
     'All',
     'Science',
@@ -267,6 +314,7 @@ class _BookmarkTabState extends State<BookmarkTab> {
   ];
   @override
   Widget build(BuildContext context) {
+    ob.current = firestoreUtility.getDataArray('my-liked-articles');
     List<Widget> categoryChips = [];
     categories.forEach((element) {
       categoryChips.add(
@@ -301,8 +349,18 @@ class _BookmarkTabState extends State<BookmarkTab> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           UserInfo(),
+          Padding(
+            padding: EdgeInsets.fromLTRB(25, 0, 0, 0),
+            child: Text(
+              'My favs',
+              style: GoogleFonts.ubuntu(
+                fontSize: 36,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
           SizedBox(
-            height: 200,
+            height: 150,
             width: MediaQuery.of(context).size.width,
             child: Row(
               children: [
@@ -317,8 +375,8 @@ class _BookmarkTabState extends State<BookmarkTab> {
           ),
           ArticleView(),
           SizedBox(
-            height: 100,
-          )
+            height: 150,
+          ),
         ],
       ),
     );

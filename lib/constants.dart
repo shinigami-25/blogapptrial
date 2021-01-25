@@ -1,3 +1,4 @@
+import 'package:blogapptrial/firestoreManagement/FirestoreUtility.dart';
 import 'package:flutter/material.dart';
 
 class Constants {
@@ -21,7 +22,9 @@ class Constants {
       password = 'dummypass';
   String name = 'Dummy', surname = 'Name';
 
-  String version = '0.1';
+  String version = '0.6';
+
+  Future<dynamic> current = storageUtility.files(ob.categoryForHome);
 
   Constants() {
     this.currentTheme = lightTheme;
@@ -44,7 +47,7 @@ class Constants {
   }
 
   void setEmail(String email) {
-    this.email = email;
+    this.email = email.split('@')[0];
   }
 }
 

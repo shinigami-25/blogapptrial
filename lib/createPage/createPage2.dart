@@ -1,4 +1,5 @@
 import 'package:blogapptrial/constants.dart';
+import 'package:blogapptrial/dashboard/dashBoard.dart';
 import 'package:blogapptrial/firestoreManagement/FirestoreUtility.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -9,15 +10,16 @@ class StorageWriteUtility {
   String title, category;
 
   StorageWriteUtility(this.title, this.category) {
-    this.title += '.txt';
     this.category = '/' + this.category + ';';
-    this._reference = storage.ref('All' + this.category + this.title);
+    this._reference = storage
+        .ref('All' + this.category + this.title + ';' + ob.email + '.txt');
   }
 
   void writeString(String data) async {
     await _reference.putString(data);
     firestoreUtility.setDoc(ob.email);
-    await firestoreUtility.addDataArray('my-blogs', 'All' + this.category + this.title);
+    await firestoreUtility.addToDataArray('my-blogs',
+        'All' + this.category + this.title + ';' + ob.email + '.txt');
   }
 }
 
@@ -74,9 +76,11 @@ class CreatePage2 extends StatelessWidget {
               FlatButton(
                 onPressed: () {
                   FocusScope.of(context).unfocus();
-                  Navigator.pop(context);
+                  while (Navigator.canPop(context)) Navigator.pop(context);
                   var util = StorageWriteUtility(this.title, this.category);
                   util.writeString(_controller.text);
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => DashBoard()));
                 },
                 child: Text(
                   'Publish',
