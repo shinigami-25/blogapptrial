@@ -4,9 +4,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 class ArticleTile extends StatefulWidget {
-  final filename;
+  final String filename;
   ArticleTile(this.filename);
 
   @override
@@ -14,7 +13,7 @@ class ArticleTile extends StatefulWidget {
 }
 
 class _ArticleTileState extends State<ArticleTile> {
-  final filename;
+  final String filename;
   _ArticleTileState(this.filename);
   bool _faved = false, _favedButton = false;
   String filePath() {
@@ -23,21 +22,21 @@ class _ArticleTileState extends State<ArticleTile> {
 
   // example filePath : Reference(app: [DEFAULT], fullPath: All/Science;First Article;Dummy_email.txt)
 
-  String title() {
-    return filePath().split(';')[1];
+  String category() {
+    return filename.split(';')[0].split('/')[1];
   }
 
-  String category() {
-    return filePath().split(';')[0].split('/')[1];
+  String title() {
+    return filename.split(';')[1];
   }
 
   String author() {
-    return filePath().split(';')[2].split('.')[0];
+    return filename.split(';')[2].split('.')[0];
   }
 
   @override
   Widget build(BuildContext context) {
-    var temp = category() + ';' + title() + ';' + author() + '.txt';
+    var temp = filename;
 
     return FutureBuilder(
       future: firestoreUtility.getDataArray('my-liked-articles'),
@@ -64,8 +63,12 @@ class _ArticleTileState extends State<ArticleTile> {
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(25))),
+                          color: Colors.black12,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(25),
+                            topRight: Radius.circular(25),
+                          ),
+                        ),
                         child: Image.asset('assets/accountImage.png'),
                       ),
                       Container(
@@ -132,27 +135,24 @@ class _ArticleTileState extends State<ArticleTile> {
                         ),
                       ),
                       IconButton(
-                        icon: Icon(!_favedButton
-                            ? Icons.favorite_border_outlined
-                            : Icons.favorite,
-                            size: 35,
-                            color: Colors.red,
+                        icon: Icon(
+                          !_faved
+                              ? Icons.favorite_border_outlined
+                              : Icons.favorite,
+                          size: 35,
+                          color: Colors.red,
                         ),
                         onPressed: () async {
                           _faved
-                              ? await firestoreUtility
-                                  .removeFromDataArray(
-                                      'my-liked-articles', temp)
-                              : await firestoreUtility
-                                  .addToDataArray(
-                                      'my-liked-articles', temp);
+                              ? await firestoreUtility.removeFromDataArray(
+                                  'my-liked-articles', temp)
+                              : await firestoreUtility.addToDataArray(
+                                  'my-liked-articles', temp);
                           _faved
-                              ? await firestoreUtility
-                                  .removeFromDataArray(
-                                      'my-liked-authors', temp)
-                              : await firestoreUtility
-                                  .addToDataArray(
-                                      'my-liked-authors', temp);
+                              ? await firestoreUtility.removeFromDataArray(
+                                  'my-liked-authors', author())
+                              : await firestoreUtility.addToDataArray(
+                                  'my-liked-authors', author());
                           setState(() {
                             _faved = !_faved;
                             _favedButton = !_favedButton;
@@ -166,9 +166,6 @@ class _ArticleTileState extends State<ArticleTile> {
               ),
             ),
             onTap: () {
-              print(title());
-              print(category());
-              print(author());
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => ArticlePage(temp)));
             },
@@ -182,56 +179,67 @@ class _ArticleTileState extends State<ArticleTile> {
   }
 }
 
-class ArticleViewHomeTab extends StatefulWidget {
+class ArticleViewHome extends StatefulWidget {
   @override
-  _ArticleViewHomeTabState createState() => _ArticleViewHomeTabState();
+  _ArticleViewHomeState createState() => _ArticleViewHomeState();
 }
 
-class _ArticleViewHomeTabState extends State<ArticleViewHomeTab> {
-
+class _ArticleViewHomeState extends State<ArticleViewHome> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: ob.current,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          List<ArticleTile> articles = [];
-          snapshot.data.items.forEach((element) {
-            if (!articles.contains(ArticleTile(element.toString()))) {
-              articles.add(ArticleTile(element.toString()));
-            }
+      future: storageUtility.files(ob.categoryForHome),
+      builder: (context, snapshot) {
+        List<ArticleTile> articles = [];
+        if (snapshot.hasData) {
+          snapshot.data.forEach((value) {
+            if (!articles.contains(ArticleTile(value)))
+              articles.add(ArticleTile(value));
           });
-          return Container(
-            height: 200,
+          return Flexible(
+            child: ListView(
+              children: articles,
+              scrollDirection: Axis.horizontal,
+            ),
+          );
+        } else {
+          return CircularProgressIndicator();
+        }
+      },
+    );
+  }
+}
+
+class ArticleViewFav extends StatefulWidget {
+  @override
+  _ArticleViewFavState createState() => _ArticleViewFavState();
+}
+
+class _ArticleViewFavState extends State<ArticleViewFav> {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: firestoreUtility.getDataArray('my-liked-articles'),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        List<Widget> articles = [];
+
+        if (snapshot.data != null) {
+          snapshot.data.forEach((value) {
+            if (value.split('/')[1].split(';')[0] == ob.categoryForHome)
+              articles.add(ArticleTile(value));
+            else if (ob.categoryForHome == 'All')
+              articles.add(ArticleTile(value));
+          });
+
+          return Flexible(
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: articles,
             ),
           );
         }
-
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator(
-              strokeWidth: 5,
-              backgroundColor: Colors.white,
-            ),
-          );
-        }
-
-        if (snapshot.hasError) {
-          Container(
-            height: 500,
-            width: 500,
-            color: Colors.red,
-          );
-        }
-
         return Center(
-          child: CircularProgressIndicator(
-            strokeWidth: 5,
-            backgroundColor: Colors.white,
-          ),
+          child: CircularProgressIndicator(),
         );
       },
     );
@@ -247,8 +255,7 @@ class ArticlePage extends StatefulWidget {
 
 class _ArticlePageState extends State<ArticlePage> {
   _ArticlePageState(this.title) {
-    print('->' + this.title.toString());
-    ref = storage.ref('All').child(this.title);
+    ref = storage.ref('All').child(this.title.split('/')[1]);
   }
   final title;
   final storage = FirebaseStorage.instance;
@@ -259,7 +266,9 @@ class _ArticlePageState extends State<ArticlePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(this.title.split('/')[1].split(';')[1]),
+      ),
       body: FutureBuilder(
         future: ref.getData(),
         builder: (context, snapshot) {
@@ -267,9 +276,17 @@ class _ArticlePageState extends State<ArticlePage> {
             snapshot.data.forEach((element) {
               content += String.fromCharCode(element);
             });
-            return SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Text(content),
+            return Padding(
+              padding: EdgeInsets.fromLTRB(5, 5, 5, 0),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: SelectableText(
+                  content,
+                  style: GoogleFonts.poppins(
+                    fontSize: 15,
+                  ),
+                ),
+              ),
             );
           }
 
@@ -294,9 +311,3 @@ class _ArticlePageState extends State<ArticlePage> {
     );
   }
 }
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
-  }

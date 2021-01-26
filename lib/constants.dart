@@ -1,70 +1,25 @@
-import 'package:blogapptrial/firestoreManagement/FirestoreUtility.dart';
-import 'package:flutter/material.dart';
-
 class Constants {
+  String email = 'Dummy_email';
+  String domain = 'dummy.com';
+  String fullName = 'Dummy Name';
+  String name = 'Dummy';
+  String surName = 'Name';
   String categoryForHome = 'All';
-  String categoryForBookmark = 'All';
+  String password = 'dummypass';
+  String version = '0.7';
+  String currentDate = DateTime.now().toLocal().toString().split(' ')[0];
 
-  Color lightTheme = Colors.white70;
-  Color darkTheme = Color.fromRGBO(2, 10, 73, 1);
-
-  Color textLight = Colors.black54;
-  Color textDark = Colors.white70;
-
-  Color currentTheme;
-  Color currentTextTheme;
-
-  String currentDate = DateTime.now().toString().split(' ')[0];
-
-  String fullName = 'Dummy Name',
-      email = 'Dummy_email',
-      domain = 'dummy.com',
-      password = 'dummypass';
-  String name = 'Dummy', surname = 'Name';
-
-  String version = '0.6';
-
-  Future<dynamic> current = storageUtility.files(ob.categoryForHome);
-
-  Constants() {
-    this.currentTheme = lightTheme;
-    this.currentTextTheme = textLight;
+  void setEmail(String param) {
+    this.email = param.split('@')[0];
+    this.domain = param.split('@')[1];
   }
 
-  void setTheme(Color color) {
-    this.currentTheme = color;
-  }
-
-  void setName(String name) {
-    this.fullName = name;
+  void setName(String param) {
+    this.fullName = param;
     this.name = this.fullName.split(' ')[0];
-    this.surname =
+    this.surName =
         this.fullName.split(' ')[this.fullName.split(' ').length - 1];
   }
-
-  void setPassword(String password) {
-    this.password = password;
-  }
-
-  void setEmail(String email) {
-    this.email = email.split('@')[0];
-  }
 }
 
-class DummyData {
-  var categorySelected = 0;
-
-  List<Widget> articles = [];
-
-  List<Widget> categoryChips = [];
-  List<String> categories = [
-    'All',
-    'Science',
-    'Business',
-    'Design',
-  ];
-}
-
-var ob = Constants();
-
-var ob2 = DummyData();
+Constants ob = new Constants();

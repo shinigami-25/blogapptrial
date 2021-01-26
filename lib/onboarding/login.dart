@@ -1,10 +1,15 @@
-import 'package:blogapptrial/constants.dart';
 import 'package:blogapptrial/dashboard/dashBoard.dart';
 import 'package:blogapptrial/firestoreManagement/FirestoreUtility.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../constants.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,11 +22,19 @@ class LoginPage extends StatelessWidget {
               ob.setEmail(cred.user.email);
               ob.setName(cred.user.displayName);
               Navigator.pop(context);
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => DashBoard()));
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => DashBoard()),
+              );
             } else {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Scaffold(appBar: AppBar(),)));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Scaffold(
+                    appBar: AppBar(),
+                  ),
+                ),
+              );
             }
           },
         ),

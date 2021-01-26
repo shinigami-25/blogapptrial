@@ -7,15 +7,17 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   BannerAd createBannerAd() {
     return BannerAd(
-      adUnitId: 'ca-app-pub-3075357993642618/4064934561',
+      adUnitId: 'ca-app-pub-6896925330712949/4767626232',
       size: AdSize.banner,
       listener: (MobileAdEvent event) {
         print("BannerAd event $event");
       },
     );
   }
+
   await Firebase.initializeApp();
-  FirebaseAdMob.instance.initialize(appId: 'ca-app-pub-3075357993642618~6691097905');
+  FirebaseAdMob.instance
+      .initialize(appId: 'ca-app-pub-6896925330712949~5213019803');
   createBannerAd()
     ..load()
     ..show();

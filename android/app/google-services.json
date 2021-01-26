@@ -1,38 +1,45 @@
 {
   "project_info": {
-    "project_number": "872406253504",
-    "project_id": "the-blog-app-6a2c8",
-    "storage_bucket": "the-blog-app-6a2c8.appspot.com"
+    "project_number": "934034464577",
+    "project_id": "the-blog-app-4a76d",
+    "storage_bucket": "the-blog-app-4a76d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:872406253504:android:bbbb95a0dd1037af069225",
+        "mobilesdk_app_id": "1:934034464577:android:9809465ecc1e11f8884bc0",
         "android_client_info": {
           "package_name": "com.example.blogapptrial"
         }
       },
       "oauth_client": [
         {
-          "client_id": "872406253504-lrpn2oo1kucmdkss3k4v3f3mpha19g9b.apps.googleusercontent.com",
+          "client_id": "934034464577-0ge68eb8a99g9kjr33mfhg2slugdtkqr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.blogapptrial",
+            "certificate_hash": "1f1fb6dd1dc2bb5984af962fe07f7074f558f566"
+          }
+        },
+        {
+          "client_id": "934034464577-stdk0sg767i78rhhgn0seo8g4uleeh3e.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBG6hxnV4n3dcQtysrAAbIhrJ7Y14T7CH0"
+          "current_key": "AIzaSyCROqJQmt70x3lVlORY5X1I0-RzMTO7R74"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "872406253504-lrpn2oo1kucmdkss3k4v3f3mpha19g9b.apps.googleusercontent.com",
+              "client_id": "934034464577-stdk0sg767i78rhhgn0seo8g4uleeh3e.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "admob_app_id": "ca-app-pub-3075357993642618~6691097905"
+        }
       }
     }
   ],

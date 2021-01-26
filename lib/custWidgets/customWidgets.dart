@@ -13,7 +13,7 @@ class UserInfo extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              Constants().currentDate,
+              Constants().currentDate.toString(),
               style: GoogleFonts.poppins(
                 fontSize: 20,
                 color: Colors.black26,

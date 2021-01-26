@@ -36,7 +36,7 @@ class StorageUtility {
     files.items.forEach((element) {
       if (element.name.toString().split(';')[0] == category) {
         allFiles.add(element.fullPath);
-      } else {
+      } else if (category == 'All') {
         allFiles.add(element.fullPath);
       }
     });

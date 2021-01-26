@@ -42,7 +42,7 @@
         </activity>
         <meta-data
           android:name="com.google.android.gms.ads.APPLICATION_ID"
-          android:value="ca-app-pub-3075357993642618~6691097905"/>
+          android:value="ca-app-pub-6896925330712949~5213019803"/>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data

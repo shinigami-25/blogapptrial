@@ -8,7 +8,6 @@ class ProfilePage extends StatelessWidget {
     return Container(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
-      color: ob.currentTheme,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -31,7 +30,6 @@ class ProfilePage extends StatelessWidget {
                 ob.fullName,
                 style: GoogleFonts.poppins(
                   fontSize: 20,
-                  color: ob.currentTextTheme,
                 ),
               ),
               SizedBox(
@@ -41,7 +39,6 @@ class ProfilePage extends StatelessWidget {
                 ob.email,
                 style: GoogleFonts.poppins(
                   fontSize: 20,
-                  color: ob.currentTextTheme,
                 ),
               ),
               SizedBox(
@@ -51,7 +48,6 @@ class ProfilePage extends StatelessWidget {
                 ob.password,
                 style: GoogleFonts.poppins(
                   fontSize: 20,
-                  color: ob.currentTextTheme,
                 ),
               ),
             ],

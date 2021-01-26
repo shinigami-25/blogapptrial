@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../constants.dart';
 
 class Page1 extends StatelessWidget {
   @override
@@ -10,13 +9,11 @@ class Page1 extends StatelessWidget {
         child: Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          color: ob.currentTheme,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
                 height: 50,
-                color: ob.currentTheme,
               ),
               Container(
                 height: MediaQuery.of(context).size.height / 2,

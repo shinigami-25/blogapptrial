@@ -1,11 +1,11 @@
 import 'package:blogapptrial/accountPage/profilePage.dart';
 import 'package:blogapptrial/createPage/createPage.dart';
 import 'package:blogapptrial/custWidgets/customWidgets.dart';
-//import 'package:blogapptrial/dashboard/article.dart';
-import 'package:blogapptrial/dummyPage.dart';
 import 'package:blogapptrial/firestoreManagement/FirestoreUtility.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'article.dart';
+import 'notification.dart';
 
 import '../constants.dart';
 
@@ -18,7 +18,6 @@ class _DashBoardState extends State<DashBoard> {
   var _divSelected = 0;
   DateTime today = DateTime.now();
   var articleView;
-
   @override
   Widget build(BuildContext context) {
     Future<bool> flag = firestoreUtility.checkDoc(ob.email);
@@ -178,9 +177,11 @@ class _DashBoardState extends State<DashBoard> {
                         ? HomeTab()
                         : _divSelected == 1
                             ? FavedTab()
-                            : _divSelected == 3
-                                ? ProfilePage()
-                                : Container(),
+                            : _divSelected == 2
+                                ? NotificationTab()
+                                : _divSelected == 3
+                                    ? ProfilePage()
+                                    : Container(),
                   ),
                 ],
               ),
@@ -267,7 +268,7 @@ class _HomeTabState extends State<HomeTab> {
       width: MediaQuery.of(context).size.width,
       color: Colors.white,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -287,13 +288,14 @@ class _HomeTabState extends State<HomeTab> {
               )),
           SizedBox(
             height: 320,
+            width: MediaQuery.of(context).size.width,
             child: Row(
-              children: [ArticleView()],
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ArticleViewHome(),
+              ],
             ),
           ),
-          SizedBox(
-            height: 100,
-          )
         ],
       ),
     );
@@ -314,7 +316,6 @@ class _FavedTabState extends State<FavedTab> {
   ];
   @override
   Widget build(BuildContext context) {
-    ob.current = firestoreUtility.getDataArray('my-liked-articles');
     List<Widget> categoryChips = [];
     categories.forEach((element) {
       categoryChips.add(
@@ -345,7 +346,7 @@ class _FavedTabState extends State<FavedTab> {
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           UserInfo(),
@@ -373,10 +374,35 @@ class _FavedTabState extends State<FavedTab> {
               ],
             ),
           ),
-          ArticleView(),
           SizedBox(
-            height: 150,
+            height: 320,
+            width: MediaQuery.of(context).size.width,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ArticleViewFav(),
+              ],
+            ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class NotificationTab extends StatefulWidget {
+  @override
+  _NotificationTabState createState() => _NotificationTabState();
+}
+
+class _NotificationTabState extends State<NotificationTab> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.red,
+      child: Column(
+        children: [
+          NotificationTile(),
         ],
       ),
     );
