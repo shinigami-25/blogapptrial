@@ -1,5 +1,6 @@
 import 'package:blogapptrial/constants.dart';
-import 'package:blogapptrial/firestoreManagement/FirestoreUtility.dart';
+import 'package:blogapptrial/dashboard/dashBoard.dart';
+import 'package:blogapptrial/firestoreManagement/Utility.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -15,7 +16,7 @@ class ArticleTile extends StatefulWidget {
 class _ArticleTileState extends State<ArticleTile> {
   final String filename;
   _ArticleTileState(this.filename);
-  bool _faved = false, _favedButton = false;
+  bool _faved = false;
   String filePath() {
     return this.filename.split(':')[2].split(')')[0];
   }
@@ -143,19 +144,21 @@ class _ArticleTileState extends State<ArticleTile> {
                           color: Colors.red,
                         ),
                         onPressed: () async {
-                          _faved
-                              ? await firestoreUtility.removeFromDataArray(
-                                  'my-liked-articles', temp)
-                              : await firestoreUtility.addToDataArray(
-                                  'my-liked-articles', temp);
-                          _faved
-                              ? await firestoreUtility.removeFromDataArray(
-                                  'my-liked-authors', author())
-                              : await firestoreUtility.addToDataArray(
-                                  'my-liked-authors', author());
+                          if (_faved) {
+                            await firestoreUtility.removeFromDataArray(
+                                'my-liked-articles', temp);
+                            await firestoreUtility.removeFromDataArray(
+                                'my-liked-authors', author());
+                          } else {
+                            await firestoreUtility.addToDataArray(
+                                'my-liked-articles', temp);
+                            await firestoreUtility.addToDataArray(
+                                'my-liked-authors', author());
+                            await firestoreUtility.addFollower(
+                                author(), ob.email);
+                          }
                           setState(() {
                             _faved = !_faved;
-                            _favedButton = !_favedButton;
                           });
                         },
                         color: Colors.blue,
@@ -260,53 +263,103 @@ class _ArticlePageState extends State<ArticlePage> {
   final title;
   final storage = FirebaseStorage.instance;
   Reference ref;
+  bool _faved = false;
 
   String content = '';
+
+  String author() {
+    return title.split(';')[2].split('.')[0];
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(this.title.split('/')[1].split(';')[1]),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            while (Navigator.canPop(context)) Navigator.pop(context);
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => DashBoard()));
+          },
+        ),
       ),
-      body: FutureBuilder(
-        future: ref.getData(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            snapshot.data.forEach((element) {
-              content += String.fromCharCode(element);
-            });
-            return Padding(
-              padding: EdgeInsets.fromLTRB(5, 5, 5, 0),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: SelectableText(
-                  content,
-                  style: GoogleFonts.poppins(
-                    fontSize: 15,
+      body: Stack(
+        children: [
+          FutureBuilder(
+            future: ref.getData(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                snapshot.data.forEach((element) {
+                  content += String.fromCharCode(element);
+                });
+                return Padding(
+                  padding: EdgeInsets.fromLTRB(5, 5, 5, 0),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: SelectableText(
+                      content,
+                      style: GoogleFonts.poppins(
+                        fontSize: 15,
+                      ),
+                    ),
                   ),
+                );
+              }
+
+              if (snapshot.hasError) {
+                return Center(
+                  child: Container(
+                    height: 200,
+                    width: 200,
+                    color: Colors.red,
+                  ),
+                );
+              }
+
+              return Center(
+                child: CircularProgressIndicator(
+                  strokeWidth: 15,
+                  backgroundColor: Colors.white,
                 ),
+              );
+            },
+          ),
+          Positioned(
+            right: 20,
+            top: 20,
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
+              child: IconButton(
+                icon: Icon(
+                  !_faved ? Icons.favorite_border_outlined : Icons.favorite,
+                  size: 35,
+                  color: Colors.red,
+                ),
+                onPressed: () async {
+                  if (_faved) {
+                    await firestoreUtility.removeFromDataArray(
+                        'my-liked-articles', this.title);
+                    await firestoreUtility.removeFromDataArray(
+                        'my-liked-authors', author());
+                  } else {
+                    await firestoreUtility.addToDataArray(
+                        'my-liked-articles', this.title);
+                    await firestoreUtility.addToDataArray(
+                        'my-liked-authors', author());
+                    await firestoreUtility.addFollower(author(), ob.email);
+                  }
+                  setState(() {
+                    _faved = !_faved;
+                  });
+                },
+                color: Colors.blue,
               ),
-            );
-          }
-
-          if (snapshot.hasError) {
-            return Center(
-              child: Container(
-                height: 200,
-                width: 200,
-                color: Colors.red,
-              ),
-            );
-          }
-
-          return Center(
-            child: CircularProgressIndicator(
-              strokeWidth: 15,
-              backgroundColor: Colors.white,
             ),
-          );
-        },
+          ),
+          
+        ],
       ),
     );
   }

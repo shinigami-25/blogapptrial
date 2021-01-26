@@ -1,5 +1,5 @@
 import 'package:blogapptrial/dashboard/dashBoard.dart';
-import 'package:blogapptrial/firestoreManagement/FirestoreUtility.dart';
+import 'package:blogapptrial/firestoreManagement/Utility.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../constants.dart';

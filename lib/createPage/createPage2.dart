@@ -1,6 +1,6 @@
 import 'package:blogapptrial/constants.dart';
 import 'package:blogapptrial/dashboard/dashBoard.dart';
-import 'package:blogapptrial/firestoreManagement/FirestoreUtility.dart';
+import 'package:blogapptrial/firestoreManagement/Utility.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
@@ -20,6 +20,7 @@ class StorageWriteUtility {
     firestoreUtility.setDoc(ob.email);
     await firestoreUtility.addToDataArray('my-blogs',
         'All' + this.category + this.title + ';' + ob.email + '.txt');
+    await firestoreUtility.notify('All' + this.category + this.title + ';' + ob.email + '.txt');
   }
 }
 

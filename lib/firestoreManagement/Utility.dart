@@ -63,6 +63,7 @@ class FirestoreUtility {
     user = param;
     _ref = firestore.collection('users').doc(param);
     _ref.set({
+      'followers': [],
       'my-blogs': [],
       'my-liked-articles': [],
       'my-liked-authors': [],
@@ -72,6 +73,31 @@ class FirestoreUtility {
   void setDoc(var param) {
     user = param;
     _ref = firestore.collection('users').doc(param);
+  }
+
+  Future<void> addFollower(var author, var newFollower) async {
+    DocumentReference _doc =
+        FirebaseFirestore.instance.collection('users').doc(author);
+    List followers = await _doc.get().then((value) => value.get('followers'));
+    if (!followers.contains(newFollower)) followers.add(newFollower);
+    await _doc.update({
+      'followers': followers,
+    });
+  }
+
+  Future<void> notify(var data) async {
+    List followers = await getDataArray('followers');
+    followers.forEach((element) async {
+      print(element);
+      DocumentReference _doc =
+          FirebaseFirestore.instance.collection('users').doc(element);
+      List prevData =
+          await _doc.get().then((value) => value.get('notification'));
+      if (!prevData.contains(data)) prevData.add(data);
+      await _doc.update({
+        'notification': prevData,
+      });
+    });
   }
 
   Future<void> addToDataArray(var field, var data) async {
@@ -93,7 +119,6 @@ class FirestoreUtility {
   Future<dynamic> getDataArray(var field) async {
     var snapshot = await _ref.get();
     var data = await snapshot.get(field);
-    print(data);
     return data;
   }
 }

@@ -1,12 +1,11 @@
 import 'package:blogapptrial/accountPage/profilePage.dart';
 import 'package:blogapptrial/createPage/createPage.dart';
 import 'package:blogapptrial/custWidgets/customWidgets.dart';
-import 'package:blogapptrial/firestoreManagement/FirestoreUtility.dart';
+import 'package:blogapptrial/firestoreManagement/Utility.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'article.dart';
 import 'notification.dart';
-
 import '../constants.dart';
 
 class DashBoard extends StatefulWidget {
@@ -270,7 +269,7 @@ class _HomeTabState extends State<HomeTab> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: MainAxisSize.max,
         children: [
           UserInfo(),
           SizedBox(
@@ -399,10 +398,9 @@ class _NotificationTabState extends State<NotificationTab> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.red,
       child: Column(
         children: [
-          NotificationTile(),
+          NotificationView(),
         ],
       ),
     );
